@@ -1,1 +1,1 @@
-# naive-bayes-fake-news-detectore
+# naive-bayes-fake-news-detector
