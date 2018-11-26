@@ -6,6 +6,7 @@ from os.path import join, isfile
 from sklearn.pipeline import Pipeline
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.datasets import fetch_20newsgroups
+from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 
 DATA_DIR = '/Users/johnviscelsangkal/Projects/mini_project_cs280/FakeNewsNet/Data'
@@ -40,19 +41,27 @@ def main():
     print('Real News Count: {}'.format(len(real_news)))
     print('Fake News Count: {}'.format(len(fake_news)))
 
+    X = []
+    y = []
+    for news in fake_news:
+        X.append(news['text'])
+        y.append(1)
+
+    for news in real_news:
+        X.append(news['text'])
+        y.append(0)
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2)
+
     text_clf = Pipeline([
         ('vect', CountVectorizer()),
         ('tfidf', TfidfTransformer()),
         ('clf', MultinomialNB()),
     ])
-
-    twenty_train = fetch_20newsgroups(subset='train', shuffle=True)
-    twenty_test = fetch_20newsgroups(subset='test', shuffle=True)
-
-    print(twenty_train.target.shape)
-    # text_clf = text_clf.fit(twenty_train.data, twenty_train.target)
-    # predicted = text_clf.predict(twenty_test.data)
-    # print(np.mean(predicted == twenty_test.target))
+    text_clf = text_clf.fit(X_train, y_train)
+    predicted = text_clf.predict(X_test)
+    print(np.mean(predicted == y_test))
 
 if __name__ == '__main__':
     main()
