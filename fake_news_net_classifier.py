@@ -51,15 +51,17 @@ def main():
         y.append(0)
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.2)
+        X, y, test_size=0.50, random_state=32)
 
     text_clf = Pipeline([
-        ('vect', CountVectorizer()),
+        ('vect', CountVectorizer(stop_words='english')),
         ('tfidf', TfidfTransformer()),
         ('clf', MultinomialNB()),
     ])
     text_clf = text_clf.fit(X_train, y_train)
+
     predicted = text_clf.predict(X_test)
+    print(predicted == y_test)
     print(np.mean(predicted == y_test))
 
 if __name__ == '__main__':
