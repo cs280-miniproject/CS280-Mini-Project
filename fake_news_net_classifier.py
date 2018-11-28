@@ -4,8 +4,9 @@ import numpy as np
 from os import listdir
 from os.path import join, isfile
 from sklearn.pipeline import Pipeline
+from sklearn.model_selection import StratifiedKFold
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 
 DATA_DIR = '/Users/johnviscelsangkal/Projects/mini_project_cs280/FakeNewsNet/Data'
@@ -50,19 +51,27 @@ def main():
         X.append(news['text'])
         y.append(0)
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.50, random_state=32)
+    X = np.array(X)
+    y = np.array(y)
 
     text_clf = Pipeline([
         ('vect', CountVectorizer(stop_words='english')),
         ('tfidf', TfidfTransformer()),
         ('clf', MultinomialNB()),
     ])
-    text_clf = text_clf.fit(X_train, y_train)
 
-    predicted = text_clf.predict(X_test)
-    print(predicted == y_test)
-    print(np.mean(predicted == y_test))
+    skf = StratifiedKFold(n_splits=10)
+    for train_index, test_index in skf.split(X, y):
+        print('--------------------------------------------------------------')
+        X_train, X_test = X[train_index], X[test_index]
+        y_train, y_test = y[train_index], y[test_index]
+
+        text_clf = text_clf.fit(X_train, y_train)
+
+        y_pred = text_clf.predict(X_test)
+        print('ACCURACY: {}'.format(np.mean(y_pred == y_test)))
+        print(confusion_matrix(y_test, y_pred))
+        print(classification_report(y_test, y_pred))
 
 if __name__ == '__main__':
     main()
