@@ -9,6 +9,7 @@ numpy = "*"
 "pep8" = "*"
 "autopep8" = "*"
 pylint = "*"
+pandas = "*"
 
 [dev-packages]
 

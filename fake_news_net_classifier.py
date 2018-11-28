@@ -44,11 +44,11 @@ def main():
     X = []
     y = []
     for news in fake_news:
-        X.append(news['text'])
+        X.append(news['text'] + ' ' + news['title'])
         y.append(1)
 
     for news in real_news:
-        X.append(news['text'])
+        X.append(news['text'] + ' ' + news['title'])
         y.append(0)
 
     X = np.array(X)
@@ -60,7 +60,7 @@ def main():
         ('clf', MultinomialNB()),
     ])
 
-    skf = StratifiedKFold(n_splits=10)
+    skf = StratifiedKFold(n_splits=5)
     for train_index, test_index in skf.split(X, y):
         print('--------------------------------------------------------------')
         X_train, X_test = X[train_index], X[test_index]
