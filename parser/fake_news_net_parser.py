@@ -6,6 +6,7 @@ from os.path import join
 
 DATA_DIR = '/Users/johnviscelsangkal/Projects/mini_project_cs280/FakeNewsNet/Data'
 
+
 class FakeNewsNetParser(object):
     def __init__(self):
         pass
