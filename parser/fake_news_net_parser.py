@@ -4,7 +4,7 @@ import numpy as np
 from os import listdir
 from os.path import join
 
-DATA_DIR = '/Users/johnviscelsangkal/Projects/mini_project_cs280/FakeNewsNet/Data'
+DATA_DIR = '../FakeNewsNet/Data'
 
 
 class FakeNewsNetParser(object):

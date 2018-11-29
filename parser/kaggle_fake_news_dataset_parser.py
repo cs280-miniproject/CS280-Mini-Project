@@ -3,7 +3,7 @@ import pandas as pd
 
 from os.path import join
 
-DATA_DIR = '/Users/johnviscelsangkal/Projects/mini_project_cs280/all'
+DATA_DIR = '../all'
 
 
 class KaggleFakeNewsDatasetParser(object):
@@ -19,5 +19,7 @@ class KaggleFakeNewsDatasetParser(object):
 
         X = data['total'].values
         y = data['label'].values
+
+        print(data.groupby(['label']).size())
 
         return X, y

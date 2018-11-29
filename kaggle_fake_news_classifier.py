@@ -7,6 +7,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 from parser.kaggle_fake_news_dataset_parser import KaggleFakeNewsDatasetParser
 
+
 def main():
     X, y = KaggleFakeNewsDatasetParser().parse()
 
