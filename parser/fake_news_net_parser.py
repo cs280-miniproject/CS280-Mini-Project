@@ -5,22 +5,19 @@ from os import listdir
 from os.path import join
 
 DATA_DIR = '/Users/johnviscelsangkal/Projects/mini_project_cs280/FakeNewsNet/Data'
-BUZZFEED_DATA_DIR = join(DATA_DIR, 'BuzzFeed')
-POLITIFACT_DATA_DIR = join(DATA_DIR, 'PolitiFact')
-
 
 class FakeNewsNetParser(object):
     def __init__(self):
         pass
 
     def parse(self):
-        data_directories = [BUZZFEED_DATA_DIR, POLITIFACT_DATA_DIR]
+        data_directories = ['BuzzFeed', 'PolitiFact']
 
         real_news_files = []
         fake_news_files = []
         for directory in data_directories:
-            real_news_dir = join(directory, 'RealNewsContent')
-            fake_news_dir = join(directory, 'FakeNewsContent')
+            real_news_dir = join(DATA_DIR, directory, 'RealNewsContent')
+            fake_news_dir = join(DATA_DIR, directory, 'FakeNewsContent')
 
             real_news_files += [join(real_news_dir, f)
                                 for f in listdir(real_news_dir)]

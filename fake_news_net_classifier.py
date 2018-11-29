@@ -14,7 +14,7 @@ def main():
     text_clf = Pipeline([
         ('vect', CountVectorizer(stop_words='english')),
         ('tfidf', TfidfTransformer()),
-        ('clf', MultinomialNB()),
+        ('clf', MultinomialNB(alpha=0.1)),
     ])
 
     skf = StratifiedKFold(n_splits=5)
