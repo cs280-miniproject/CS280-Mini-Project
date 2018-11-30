@@ -12,9 +12,9 @@ def main():
     X, y = KaggleFakeNewsDatasetParser().parse()
 
     text_clf = Pipeline([
-        ('vect', CountVectorizer(stop_words='english')),
+        ('vect', CountVectorizer(ngram_range=(1, 2))),
         ('tfidf', TfidfTransformer()),
-        ('clf', MultinomialNB(alpha=0.1)),
+        ('clf', MultinomialNB(alpha=0.01)),
     ])
 
     skf = StratifiedKFold(n_splits=5)
