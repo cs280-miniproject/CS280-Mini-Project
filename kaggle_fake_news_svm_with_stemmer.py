@@ -1,19 +1,27 @@
 import numpy as np
 
 from sklearn.pipeline import Pipeline
+from nltk.stem.snowball import SnowballStemmer
 from sklearn.linear_model import SGDClassifier
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 from parser.kaggle_fake_news_dataset_parser import KaggleFakeNewsDatasetParser
-from parser.fake_news_net_parser import FakeNewsNetParser
+
+stemmer = SnowballStemmer("english", ignore_stopwords=True)
+
+
+class StemmedCountVectorizer(CountVectorizer):
+    def build_analyzer(self):
+        analyzer = super(StemmedCountVectorizer, self).build_analyzer()
+        return lambda doc: ([stemmer.stem(w) for w in analyzer(doc)])
 
 
 def main():
-    X, y = FakeNewsNetParser().parse(['PolitiFact'])
+    X, y = KaggleFakeNewsDatasetParser().parse()
 
     text_clf = Pipeline([
-        ('vect', CountVectorizer(ngram_range=(1, 2))),
+        ('vect', StemmedCountVectorizer(stop_words='english')),
         ('tfidf', TfidfTransformer()),
         (
             'clf-svm',

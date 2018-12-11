@@ -11,9 +11,7 @@ class FakeNewsNetParser(object):
     def __init__(self):
         pass
 
-    def parse(self):
-        data_directories = ['BuzzFeed', 'PolitiFact']
-
+    def parse(self, data_directories=['BuzzFeed', 'PolitiFact']):
         real_news_files = []
         fake_news_files = []
         for directory in data_directories:
@@ -35,20 +33,33 @@ class FakeNewsNetParser(object):
             with open(fake_news_file) as f:
                 fake_news.append(json.load(f))
 
-        print('Real News Count: {}'.format(len(real_news)))
-        print('Fake News Count: {}'.format(len(fake_news)))
-
         X = []
         y = []
+
+        self.x_fake = []
+        self.x_real = []
+
         for news in fake_news:
-            X.append(news['text'] + ' ' + news['title'])
+            n = news['text'] + ' ' + news['title']
+            self.x_fake.append(n)
+            X.append(n)
             y.append(1)
 
         for news in real_news:
-            X.append(news['text'] + ' ' + news['title'])
+            n = news['text'] + ' ' + news['title']
+            self.x_real.append(n)
+            X.append(n)
             y.append(0)
 
         X = np.array(X)
         y = np.array(y)
+        self.x_fake = np.array(self.x_fake)
+        self.x_real = np.array(self.x_real)
 
         return X, y
+
+    def get_fake_news(self):
+        return self.x_fake
+
+    def get_real_news(self):
+        return self.x_real
